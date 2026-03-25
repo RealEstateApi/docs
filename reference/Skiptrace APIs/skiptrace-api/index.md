@@ -13,6 +13,8 @@ metadata:
 next:
   description: ''
 ---
+> **A newer version of this API is available.** See [SkipTrace API v2](../skiptrace-api-v2) for the updated endpoints with demographic search filters (age, gender, ethnicity, marital status, occupation) and a simplified response structure.
+
 <TutorialTile backgroundColor="#0efbcc" emoji="📞" id="62630d33e87e050091d6eaee" link="https://developer.realestateapi.com/v1.0/recipes/using-the-skiptrace-api" slug="using-the-skiptrace-api" title="Using the SkipTrace API" />
 
 ## "mail\_address" Parts Lookup
