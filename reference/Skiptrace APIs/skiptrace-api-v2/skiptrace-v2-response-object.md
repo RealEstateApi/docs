@@ -54,7 +54,7 @@ next:
       "occupationCode": "32",
       "occupationDescription": "Management",
       "ethnicityCode": "K",
-      "ethnicityDescription": "English",
+      "ethnicityDescription": "Western European",
       "lastUpdateDate": "2025-11-01"
     }
   ],
@@ -105,8 +105,8 @@ next:
 | `maritalStatusDescription` | string | Human-readable marital status. |
 | `occupationCode` | string | Occupation code (returned as string). See [Occupation Codes](index#occupation-code-reference). |
 | `occupationDescription` | string | Human-readable occupation. |
-| `ethnicityCode` | string | Ethnicity code. |
-| `ethnicityDescription` | string | Human-readable ethnicity. |
+| `ethnicityCode` | string | Ethnicity code. See [Ethnicity Code Reference](index#ethnicity-code-reference). |
+| `ethnicityDescription` | string | Human-readable ethnicity (e.g. `"Western European"`, `"African American"`). |
 | `lastUpdateDate` | string (YYYY-MM-DD) | Date the record was last updated. |
 
 ### Address Object

@@ -39,9 +39,9 @@ At least one of the following must be provided: `address`, `mail_address`, `city
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `first_name` | string | No | First name. Required for city/state/zip-only searches. |
+| `first_name` | string | No | First name. Required for city/state/zip-only searches unless demographic filters are present. |
 | `middle_name` | string | No | Middle name. |
-| `last_name` | string | No | Last name. Required for city/state/zip-only searches. |
+| `last_name` | string | No | Last name. Required for city/state/zip-only searches unless demographic filters are present. |
 | `phone` | string | No | 10-digit phone number (digits only, no formatting). |
 | `email` | string | No | Email address. |
 | `key` | string/number | No | Relationship key for correlation. |
@@ -68,17 +68,37 @@ At least one of the following must be provided: `address`, `mail_address`, `city
 
 ### Demographic Search Filters
 
-These optional filters narrow results by demographic attributes. They must be combined with a primary search criterion (address, phone, email, or name) and cannot be used as standalone search criteria.
+These optional filters narrow results by demographic attributes. `ethnicity_code`, `marital_status_code`, `gender`, and `occupation_code` require at least a `zip` code or both `city` and `state` to prevent full-dataset scans. When demographic filters are present, `first_name`/`last_name` are not required for zip/city/state searches — enabling aggregate queries like "find retired men in zip 20170" without specifying a target individual.
+
+`age` and `age_range_min`/`age_range_max` have no geographic requirement.
 
 | Parameter | Type | Description | Allowed Values |
 |-----------|------|-------------|----------------|
 | `age` | integer | Exact age. Mutually exclusive with `age_range_min`/`age_range_max`. | Positive integer |
 | `age_range_min` | integer | Minimum age (inclusive). Cannot be used with `age`. | Positive integer |
 | `age_range_max` | integer | Maximum age (inclusive). Must be >= `age_range_min`. | Positive integer |
-| `ethnicity_code` | string | Ethnicity filter. | `A`, `B`, `C`, `E`, `F`, `I`, `J`, `K`, `L`, `N`, `O`, `P`, `Q` |
-| `marital_status_code` | string | Marital status filter. | `S` (Single), `M` (Married), `D` (Divorced), `W` (Widowed), `5M`, `5D` |
-| `gender` | string | Gender filter. | `M` (Male), `F` (Female) |
-| `occupation_code` | integer or array | Occupation filter. Single integer or array of integers. | Integer `1`–`55` (see table below) |
+| `ethnicity_code` | string | Ethnicity filter. Requires zip or city+state. | See Ethnicity Code Reference below |
+| `marital_status_code` | string | Marital status filter. Requires zip or city+state. | `S` (Single), `M` (Married), `D` (Divorced), `W` (Widowed), `5M`, `5D` |
+| `gender` | string | Gender filter. Requires zip or city+state. | `M` (Male), `F` (Female) |
+| `occupation_code` | integer or array | Occupation filter. Requires zip or city+state. Single integer or array. | Integer `1`–`55` (see Occupation Code Reference below) |
+
+#### Ethnicity Code Reference
+
+| Code | Description |
+|------|-------------|
+| `A` | African American |
+| `B` | Southeast Asian |
+| `C` | South Asian |
+| `E` | Mediterranean |
+| `F` | Native American |
+| `I` | Middle Eastern |
+| `J` | Jewish |
+| `K` | Western European |
+| `L` | Eastern |
+| `N` | Unknown |
+| `O` | Unknown |
+| `P` | Unknown |
+| `Q` | Unknown |
 
 #### Occupation Code Reference
 
@@ -162,6 +182,18 @@ These optional filters narrow results by demographic attributes. They must be co
 }
 ```
 
+### Aggregate demographic search by zip (no name required)
+
+```json
+{
+  "zip": "20170",
+  "marital_status_code": "M",
+  "ethnicity_code": "A",
+  "gender": "M",
+  "occupation_code": 2
+}
+```
+
 ### Name search with marital status and gender filters
 
 ```json
@@ -228,7 +260,8 @@ Common validation errors:
 - `ethnicity_code must be one of: A, B, C, E, F, I, J, K, L, N, O, P, Q`
 - `marital_status_code must be one of: S, M, D, W, 5M, 5D`
 - `gender must be one of: M, F`
-- `City level search requires first_name, last_name, and one of [state, zip]`
+- `Demographic filters (ethnicity_code, marital_status_code, gender, occupation_code) require at least a zip code, or both city and state`
+- `City level search requires first_name, last_name, and one of [state, zip]` — only when no demographic filters are present
 
 ### 401 - Unauthorized
 
