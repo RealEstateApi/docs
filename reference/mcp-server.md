@@ -116,6 +116,13 @@ This gives you:
 - **realestate-api-mcp**: Access to live real estate data
 - **reapi-developer**: Documentation and code assistance in your IDE
 
+## Claude Code Command Example
+
+```bash
+claude mcp add --transport sse realestate-api-mcp https://mcp.realestateapi.com/sse --header "X-API-Key: YOUR_API_KEY"
+claude mcp add --transport sse reapi-developer https://developer.mcp.realestateapi.com/sse
+```
+
 ## Compatibility
 
 Both MCP servers are compatible with:
